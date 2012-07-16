@@ -27,31 +27,17 @@
 <body>
 	<div data-role="page" class="type-home">
 		<div data-role="content">			
-			<div class="content-primary">
-				<nav>
-					<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
-						<li data-role="list-divider">Chapter 14</li>
-						<!-- **data-ajax="false" enables full loading of the page rather adding to the existing DOM** -->
-						<li><a data-ajax="false" href="contact_visualizer.html">Contact Visualizer</a></li>
-						<li><a data-ajax="false" href="activation_feedback.html">Activation</a></li>
-					</ul>
-				</nav>
-			</div>
+			<canvas id="canvas" width="300" height="400">Sorry! Your browser doesn't support Canvas.</canvas>
+			<!-- div id="status">
+				<ul>
+					<li id="cancelledTouches"></li>
+					<li id="debug"></li>
+				</ul>
+			</div-->
 		</div>
-	</div>
-<!--div id="container">
-	<header>
-		<h1>Learn to build NUI</h1>
-		<p>with <strong>Brave NUI World</strong></p>
-	</header>
-	<div id="main" role="main">
-		<div class="">
 		
 	</div>
-	<footer>
 
-	</footer>
-</div--> <!--! end of #container -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="../../js/libs/jquery-1.7.1.min.js"><\/script>')</script>
@@ -60,8 +46,7 @@
 <script>window.jQuery || document.write('<script src="../../js/libs/jquery.mobile-1.1.0.min.js"><\/script>')</script>
 
 <!-- scripts concatenated and minified via ant build script-->
-<!--script src="../../js/plugins.js"></script>
-<script src="../../js/script.js"></script-->
+<script src="../../js/activation.js"></script>
 <!-- end scripts-->
 
 <script>
