@@ -6,7 +6,8 @@
 var CanvasDrawr = function(options) {
 	// grab canvas element
 	var canvas = document.getElementById(options.id),
-	    ctxt = canvas.getContext("2d");
+	    ctxt = canvas.getContext("2d"),
+			showId = options.showId;
   
 	//CHECK What are the next 3 lines for
 	canvas.style.width = '100%';
@@ -60,9 +61,11 @@ var CanvasDrawr = function(options) {
 					  ctxt.arc(touch.x, touch.y, touch.radius, 0, 2 * Math.PI, false);
 					  ctxt.fillStyle = touch.color;
 					  ctxt.fill();
-						ctxt.fillStyle = "black";
-						ctxt.font = "bold 12px sans-serif";
-						ctxt.fillText(touch.id, touch.x-TEXTOFFSETX, touch.y-TEXTOFFSETY);
+						if(showId) {
+							ctxt.fillStyle = "black";
+							ctxt.font = "bold 12px sans-serif";
+							ctxt.fillText(touch.id, touch.x-TEXTOFFSETX, touch.y-TEXTOFFSETY);
+						}
 				});
 				
 				//Reduce the radius of touches and remove invisible touches (radius <=0)
@@ -84,9 +87,11 @@ var CanvasDrawr = function(options) {
 					  ctxt.arc(touch.x, touch.y, touch.radius, 0, 2 * Math.PI, false);
 					  ctxt.fillStyle = touch.color;
 					  ctxt.fill();
-						ctxt.fillStyle = "black";
-						ctxt.font = "bold 12px sans-serif";
-						ctxt.fillText(touch.id, touch.x-TEXTOFFSETX, touch.y-TEXTOFFSETY);
+						if(showId) {
+							ctxt.fillStyle = "black";
+							ctxt.font = "bold 12px sans-serif";
+							ctxt.fillText(touch.id, touch.x-TEXTOFFSETX, touch.y-TEXTOFFSETY);
+						}
 				});
 			},
 
@@ -165,5 +170,5 @@ var CanvasDrawr = function(options) {
 
 
 $(document).ready(function () {
-  var super_awesome_multitouch_drawing_canvas_thingy = new CanvasDrawr({id:"canvas", size: 15 }); 
+  var super_awesome_multitouch_drawing_canvas_thingy = new CanvasDrawr({id:"canvas", size: 15, showId: false}); 
 });
