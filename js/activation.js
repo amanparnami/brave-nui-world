@@ -24,30 +24,34 @@ var CanvasDrawr = function(options) {
 	var activeTouches = []; //Active touch points
 	var removedTouches = []; //Removed touches and still animating
 	//control states: 0: idle, engaged, activated, dragging
-	var CTRL_IDLE = 0;
-	var CTRL_ENGAGED = 1;
-	var CTRL_ACTIVATED = 2;
+	var CTRL_STATE_IDLE = 0;
+	var CTRL_STATE_ENGAGED = 1;
+	var CTRL_STATE_ACTIVATED = 2;
+	var CTRL_TYPE_BUTTON = 0;
+	var CTRL_TYPE_SLIDER = 1;
 	var controls = [{
 										id: 0,
+										type: CTRL_TYPE_BUTTON,
 										x: canvas.width/2 - 50 - offset.left, 
 										y: canvas.height/2 - offset.top, 
 										w: 80, 
 										h: 40, 
 										defaultColor: "#8D8D8D", 
 										title: "Button1", 
-										state: CTRL_IDLE,
+										state: CTRL_STATE_IDLE,
 										engagedTouchId: -1,
 										unengagedTouchId: []
 									}, 
 									{
 										id: 1,
+										type: CTRL_TYPE_BUTTON,
 										x: canvas.width/2 + 50 - offset.left, 
 										y: canvas.height/2 - offset.top, 
 										w: 80, 
 										h: 40, 
 										defaultColor: "#8D8D8D", 
 										title: "Button2", 
-										state: CTRL_IDLE,
+										state: CTRL_STATE_IDLE,
 										engagedTouchId: -1,
 										unengagedTouchId: []
 									}];
@@ -56,8 +60,8 @@ var CanvasDrawr = function(options) {
 	var CTRL_ENGAGEDCOLOR = "rgba(250, 250, 250, 1.0)";
 	
 	var ACTIVERADIUS = 40;
-	var ACTIVECOLOR = "rgba(0, 0, 192, 1.0)";// OR "blue"
-	var REMOVEDCOLOR = "rgba(0, 0, 192, 0.5)"; // OR "red"
+	var ACTIVECOLOR = "rgba(89, 186, 206, 1.0)";// OR "blue"
+	var REMOVEDCOLOR = "rgba(89, 186, 206, 0.5)"; // OR "red"
 	var RADIUSDECREMENT = 5;
 	var TEXTOFFSETX = 25;
 	var TEXTOFFSETY = 25;
@@ -128,7 +132,7 @@ var CanvasDrawr = function(options) {
 			ctxt.moveTo(control.x + control.w/2, control.y + control.h/2);
 			ctxt.lineTo(touch.x, touch.y);
 			ctxt.lineWidth = 3;
-			ctxt.strokeStyle = "#ff0000";
+			ctxt.strokeStyle = "#e3d7c7";
 			ctxt.stroke();
 		}, 
 		drawTouch: function(touch) {
@@ -149,10 +153,10 @@ var CanvasDrawr = function(options) {
 			ctxt.beginPath();
       ctxt.rect(control.x, control.y, control.w, control.h);
 			switch(control.state) {
-				case CTRL_IDLE:
+				case CTRL_STATE_IDLE:
 					ctxt.fillStyle = control.defaultColor;      
 					break;
-				case CTRL_ENGAGED:
+				case CTRL_STATE_ENGAGED:
 					ctxt.fillStyle = CTRL_ENGAGEDCOLOR;
 					//TODO if the engagedTouchId is not on the control draw tethering
 					break;
@@ -196,8 +200,8 @@ var CanvasDrawr = function(options) {
 					if(self.isTouchOnAControl(newTouch, control)) {
 						//If a control is not already engaged then engage
 						// else do not allow engaging and show tethering
-						if(control.state != CTRL_ENGAGED) {
-							control.state = CTRL_ENGAGED;
+						if(control.state != CTRL_STATE_ENGAGED) {
+							control.state = CTRL_STATE_ENGAGED;
 							control.engagedTouchId = newTouch.id;
 							newTouch.engagedControlId = control.id;
 						} else {
@@ -253,7 +257,7 @@ var CanvasDrawr = function(options) {
 					removedTouches.push(justRemovedTouch);
 					if(justRemovedTouch.engagedControlId != -1) {
 						controls[justRemovedTouch.engagedControlId].engagedTouchId = -1;
-						controls[justRemovedTouch.engagedControlId].state = CTRL_IDLE;
+						controls[justRemovedTouch.engagedControlId].state = CTRL_STATE_IDLE;
 						justRemovedTouch.engagedControlId = -1;
 					}
 				}
