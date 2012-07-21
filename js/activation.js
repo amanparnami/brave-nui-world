@@ -127,13 +127,55 @@ var CanvasDrawr = function(options) {
 				self.drawTouch(touch);
 			});
 		},
+		compare: function(a,b) {
+			  if (a.distance < b.distance)
+			     return -1;
+			  if (a.distance > b.distance)
+			    return 1;
+			  return 0;
+			},
+		getDistance: function(point1,point2) {
+			  var xs = 0;
+			  var ys = 0;
+			  xs = point2.x - point1.x;
+			  xs = xs * xs;
+			  ys = point2.y - point1.y;
+			  ys = ys * ys;
+			  return Math.sqrt( xs + ys );
+			},
 		drawTether: function(touch, control) {
 			ctxt.beginPath();
-			ctxt.moveTo(control.x + control.w/2, control.y + control.h/2);
+			//ASSUMPTION that the touch will not be within the object
+			//Find the section in which the touch lies and decide the edge to tether to
+			var c = control, t=touch;
+			var distanceBetTouchNEdge = [];
+			distanceBetTouchNEdge.push({distance: self.getDistance({x: c.x+c.w/2, y: c.y}, t), side: 't'});
+			distanceBetTouchNEdge.push({distance: self.getDistance({x: c.x, y: c.y+c.h/2},t), side: 'l'});
+			distanceBetTouchNEdge.push({distance: self.getDistance({x: c.x+c.w/2, y: c.y+c.h},t), side: 'b'});
+			distanceBetTouchNEdge.push({distance: self.getDistance({x: c.x+c.w, y: c.y+c.h/2},t), side: 'r'});
+
+			distanceBetTouchNEdge.sort(self.compare);
+			
+			//Getting the first element (i.e with the smallest value of distance)
+			switch(distanceBetTouchNEdge[0].side) {
+				case 't':
+					ctxt.moveTo(c.x + c.w/2, c.y);
+					break;
+				case 'l':
+					ctxt.moveTo(c.x, c.y + c.h/2);
+					break;
+				case 'b':
+					ctxt.moveTo(c.x + c.w/2, c.y + c.h);
+					break;
+				case 'r':
+					ctxt.moveTo(c.x + c.w, c.y + c.h/2);
+					break;
+			}
 			ctxt.lineTo(touch.x, touch.y);
 			ctxt.lineWidth = 3;
 			ctxt.strokeStyle = "#e3d7c7";
 			ctxt.stroke();
+			ctxt.closePath();
 		}, 
 		drawTouch: function(touch) {
 			//This function takes a touch object and draws it
